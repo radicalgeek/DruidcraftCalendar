@@ -1,0 +1,17 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DruidCraftCalendar", "DruidCraftCalendar\DruidCraftCalendar.csproj", "{EDABCDDB-5136-4DA6-9AA4-EE23F1DBABE1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EDABCDDB-5136-4DA6-9AA4-EE23F1DBABE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDABCDDB-5136-4DA6-9AA4-EE23F1DBABE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDABCDDB-5136-4DA6-9AA4-EE23F1DBABE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDABCDDB-5136-4DA6-9AA4-EE23F1DBABE1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
