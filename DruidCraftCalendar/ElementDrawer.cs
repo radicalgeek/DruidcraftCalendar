@@ -21,7 +21,7 @@ namespace DruidCraftCalendar
             for (var i = 0; i < points; i++)
             {
                 float x = Convert.ToSingle(((info.Width) / 2) + ring.Radius * Math.Sin(Math.PI + offset + (2 * Math.PI * i / points)));
-                float y = Convert.ToSingle(((info.Width) / 2) + ring.Radius * Math.Cos(Math.PI + offset + (2 * Math.PI * i / points)));
+                float y = Convert.ToSingle(((info.Height) / 2) + ring.Radius * Math.Cos(Math.PI + offset + (2 * Math.PI * i / points)));
                 var point = GetPegPointTemplate(info);
                 point.x = x;
                 point.y = y;
@@ -46,7 +46,7 @@ namespace DruidCraftCalendar
                 paint.Style = SKPaintStyle.Fill;
 
             if (draw)
-                canvas.DrawCircle(((info.Width) / 2), (info.Width) / 2, ring.Radius, paint);
+                canvas.DrawCircle(info.Width / 2, info.Height / 2, ring.Radius, paint);
             return ring;
         }
     }

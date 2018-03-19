@@ -24,7 +24,15 @@ namespace DruidCraftCalendar
 
         public static float GetWidthValueFromPercentage(SKImageInfo info, float v)
         {
-            var val = (info.Width / 100) * v;
+            var val = 0f;
+            if(info.Width < info.Height)
+            {
+                val = (info.Width / 100) * v;
+            }
+            else
+            {
+                val = (info.Height / 100) * v;
+            }
             return val;
         }
 
@@ -176,9 +184,10 @@ namespace DruidCraftCalendar
         private static SKImageInfo BuildInnerDayRing(SKImageInfo info, SKCanvas canvas, float innerRingPercentageWidth, SKPaint arcPainter)
         {
             var innerRingActualWidth = GetWidthValueFromPercentage(info, innerRingPercentageWidth) * 2;
-            var innerRingPadding = (info.Width - innerRingActualWidth) / 2;
+            var innerRingPaddingx = (info.Width - innerRingActualWidth) / 2;
+            var innerRingPaddingy = (info.Height - innerRingActualWidth) / 2;
 
-            SKRect rect = new SKRect(innerRingPadding, innerRingPadding, info.Width - innerRingPadding, info.Width - innerRingPadding);
+            SKRect rect = new SKRect(innerRingPaddingx, innerRingPaddingy, info.Width - innerRingPaddingx, info.Height - innerRingPaddingy);
 
             using (SKPath path = new SKPath())
             {
@@ -192,9 +201,10 @@ namespace DruidCraftCalendar
         private static SKImageInfo BuildOuterDayRing(SKImageInfo info, SKCanvas canvas, float outerRingPercentageWidth, SKPaint arcPainter)
         {
             var outerRingActualWidth = GetWidthValueFromPercentage(info, outerRingPercentageWidth) * 2;
-            var outerRingPadding = (info.Width - outerRingActualWidth) / 2;
+            var outerRingPaddingx = (info.Width - outerRingActualWidth) / 2;
+            var outerRingPaddingy = (info.Height - outerRingActualWidth) / 2;
 
-            SKRect rect = new SKRect(outerRingPadding, outerRingPadding, info.Width - outerRingPadding, info.Width - outerRingPadding);
+            SKRect rect = new SKRect(outerRingPaddingx, outerRingPaddingy, info.Width - outerRingPaddingx, info.Height - outerRingPaddingy);
 
             using (SKPath path = new SKPath())
             {
@@ -256,7 +266,7 @@ namespace DruidCraftCalendar
                 Style = SKPaintStyle.Stroke,
                 StrokeWidth = 2
             };
-            canvas.DrawLine(((info.Width - 20) / 2) + 10, (info.Width - 20) / 2, p.x, p.y, linePainter);
+            canvas.DrawLine(((info.Width - 20) / 2) + 10, (info.Height - 20) / 2, p.x, p.y, linePainter);
         }
 
         private static void DrawYearRing(SKImageInfo info, SKCanvas canvas, IMetonicYearModel year)

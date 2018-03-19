@@ -1,15 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-  <item
+    <item
+       android:id="@+id/menu_now"
+       android:showAsAction="never"
+       android:title="Now" />  
+    <item
        android:id="@+id/menu_setdate"
        android:showAsAction="never"
        android:title="Set Date" />
-  <item
+    <item
        android:id="@+id/menu_play"
        android:showAsAction="never"
        android:title="Play" />
-  <item
+    <item
        android:id="@+id/menu_stop"
        android:showAsAction="never"
        android:title="Stop" />
+    <item
+       android:id="@+id/menu_leclipse"
+       android:showAsAction="never"
+       android:title="Next lunar eclipse" />
+    <item
+       android:id="@+id/menu_seclipse"
+       android:showAsAction="never"
+       android:title="Next solar eclipse" />
+    <item
+       android:id="@+id/menu_festival"
+       android:showAsAction="never"
+       android:title="Next festival day" />
 </menu>

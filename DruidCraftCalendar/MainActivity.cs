@@ -71,6 +71,10 @@ namespace DruidCraftCalendar
             ActionBar.Title = "Druidcraft Calendar";
 
             var diff = (DateTime.Now - _gregorianDate).TotalDays;
+            if (DateTime.Now.ToString("tt") == "PM")
+            {
+                diff = diff - 1;
+            }
             AddDays(Convert.ToInt32(diff));
             _gregorianDate = DateTime.Now;
             _gregorianLabel.Text = "Gregorian Date: " + _gregorianDate.ToLongDateString();
@@ -83,11 +87,22 @@ namespace DruidCraftCalendar
             stopwatch.Start();
             while (_playing)
             {
+                var delay = 1000;
                 AddDay();
                 _gregorianLabel.Text = "Gregorian Date: " + _gregorianDate.ToLongDateString();
                 _metonicLabel.Text = "Druidcraft Date: " + GetMetonicDate();
                 canvasView.Invalidate();
-                await Task.Delay(1000);
+                if (CheckLunarEclipse())
+                {
+                    Toast.MakeText(this,"Lunar Eclipse",ToastLength.Long).Show();
+                    delay = 2000;
+                }
+                if (CheckSolarEclipse())
+                {
+                    Toast.MakeText(this, "Possible Solar Eclipse", ToastLength.Long).Show();
+                    delay = 2000;
+                }
+                await Task.Delay(delay);
             }
             stopwatch.Stop();
         }
@@ -101,7 +116,12 @@ namespace DruidCraftCalendar
         {
             if (item.TitleFormatted.ToString() == "Set Date")
                 DateSelect_OnClick();
-
+            
+            if (item.TitleFormatted.ToString() == "Now")
+            {
+                Date_Changed(DateTime.Now);
+            }
+            
             if (item.TitleFormatted.ToString() == "Play")
             {
                 _playing = true;
@@ -111,6 +131,30 @@ namespace DruidCraftCalendar
             if (item.TitleFormatted.ToString() == "Stop")
             {
                 _playing = false;
+            }
+
+            if (item.TitleFormatted.ToString() == "Next lunar eclipse")
+            {
+                
+                while(!CheckLunarEclipse())
+                {
+                    AddDay();
+                }
+                _gregorianLabel.Text = "Gregorian Date: " + _gregorianDate.ToLongDateString();
+                _metonicLabel.Text = "Druidcraft Date: " + GetMetonicDate();
+                canvasView.Invalidate();
+            }
+
+            if (item.TitleFormatted.ToString() == "Next solar eclipse")
+            {
+
+                while (!CheckSolarEclipse())
+                {
+                    AddDay();
+                }
+                _gregorianLabel.Text = "Gregorian Date: " + _gregorianDate.ToLongDateString();
+                _metonicLabel.Text = "Druidcraft Date: " + GetMetonicDate();
+                canvasView.Invalidate();
             }
 
             return base.OnOptionsItemSelected(item);
@@ -123,17 +167,20 @@ namespace DruidCraftCalendar
             _canvas = _surface.Canvas;
 
             _canvas.Clear();
+            var scale = _info.Width / canvasView.Width;
+            _canvas.Scale(scale);                 
+
            
             string resourceID = "DruidCraftCalendar.Assets.calendar2.png";
             Assembly assembly = GetType().GetTypeInfo().Assembly;
 
             var cx = (_info.Width - Calendar.GetWidthValueFromPercentage(_info, 99)) /2;
-            var cy = (_info.Width /2) - ((_info.Width - Calendar.GetWidthValueFromPercentage(_info, 99)) /2);
+            var cy = (_info.Height - Calendar.GetWidthValueFromPercentage(_info, 99)) /2;
 
             using (var stream = assembly.GetManifestResourceStream(resourceID))
             using (var bitmap = SKBitmap.Decode(stream))
             using (var paint = new SKPaint()){
-                _canvas.DrawBitmap(bitmap, SKRect.Create(cx,cx ,Calendar.GetWidthValueFromPercentage(_info, 99), Calendar.GetWidthValueFromPercentage(_info, 99)),paint);
+                _canvas.DrawBitmap(bitmap, SKRect.Create(cx,cy ,Calendar.GetWidthValueFromPercentage(_info, 99), Calendar.GetWidthValueFromPercentage(_info, 99)),paint);
             }
 
             Calendar.DrawCalendar(_info,_canvas, _nodesModel, _sunModel, _moonModel, _metonicYearModel, _monthModel, _dayModel, _sunCountModel);
@@ -171,7 +218,7 @@ namespace DruidCraftCalendar
 
 
             _dayModel.Set(1);
-            _dayModel.SetLongMonth();
+            _dayModel.IsShortMonth();
             _monthModel.Set(1);
             _metonicYearModel.SetMetonicYear(4);
             _moonModel.Set(1);
@@ -215,6 +262,42 @@ namespace DruidCraftCalendar
             TimeSpan diff = date - _gregorianDate;
             AddDays(diff.Days);
             return GetMetonicDate();
+        }
+
+        private bool CheckLunarEclipse()
+        {
+            if ((_nodesModel.GetNode1Position() == _moonModel.Get() && _nodesModel.GetNode2Position() == _sunModel.Get()) || (_nodesModel.GetNode2Position() == _moonModel.Get() && _nodesModel.GetNode1Position() == _sunModel.Get()))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private bool CheckSolarEclipse()
+        {
+            
+            bool isEclipse = false;
+
+            bool node1SunAligned = false;
+            if (_nodesModel.GetNode1Position() == _sunModel.Get() || _nodesModel.GetNode1Position() == _sunModel.Get() - 1 || _nodesModel.GetNode1Position() == _sunModel.Get() + 1)
+                node1SunAligned = true;
+
+            bool node1MoonAligned = false;
+            if (_nodesModel.GetNode1Position() == _moonModel.Get() || _nodesModel.GetNode1Position() == _moonModel.Get() - 1 || _nodesModel.GetNode1Position() == _moonModel.Get() + 1)
+                node1MoonAligned = true;
+            
+            bool node2SunAligned = false;
+            if (_nodesModel.GetNode2Position() == _sunModel.Get() || _nodesModel.GetNode2Position() == _sunModel.Get() - 1 || _nodesModel.GetNode2Position() == _sunModel.Get() + 1)
+                node2SunAligned = true;
+
+            bool node2MoonAligned = false;
+            if (_nodesModel.GetNode2Position() == _moonModel.Get() || _nodesModel.GetNode2Position() == _moonModel.Get() - 1 || _nodesModel.GetNode2Position() == _moonModel.Get() + 1)
+                node2MoonAligned = true;
+
+            if ((node1SunAligned == true && node1MoonAligned == true) || (node2SunAligned == true && node2MoonAligned == true))
+                isEclipse = true;
+            
+            return isEclipse;
         }
     }
 }

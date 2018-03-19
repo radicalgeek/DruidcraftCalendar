@@ -3291,14 +3291,26 @@ namespace DruidCraftCalendar
 			// aapt resource value: 0x7f0800bc
 			public const int media_actions = 2131230908;
 			
-			// aapt resource value: 0x7f0800cd
-			public const int menu_play = 2131230925;
+			// aapt resource value: 0x7f0800d2
+			public const int menu_festival = 2131230930;
+			
+			// aapt resource value: 0x7f0800d0
+			public const int menu_leclipse = 2131230928;
 			
 			// aapt resource value: 0x7f0800cc
-			public const int menu_setdate = 2131230924;
+			public const int menu_now = 2131230924;
 			
 			// aapt resource value: 0x7f0800ce
-			public const int menu_stop = 2131230926;
+			public const int menu_play = 2131230926;
+			
+			// aapt resource value: 0x7f0800d1
+			public const int menu_seclipse = 2131230929;
+			
+			// aapt resource value: 0x7f0800cd
+			public const int menu_setdate = 2131230925;
+			
+			// aapt resource value: 0x7f0800cf
+			public const int menu_stop = 2131230927;
 			
 			// aapt resource value: 0x7f0800c9
 			public const int message = 2131230921;
