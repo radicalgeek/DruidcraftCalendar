@@ -10,7 +10,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>DruidCraftCalendar</RootNamespace>
     <AssemblyName>DruidCraftCalendar</AssemblyName>
-    <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
     <AndroidApplication>True</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AndroidResgenClass>Resource</AndroidResgenClass>
@@ -148,6 +148,12 @@
     <Compile Include="ElementDrawer.cs" />
     <Compile Include="CircleShape.cs" />
     <Compile Include="DatePickerFragment.cs" />
+    <Compile Include="Touch\TouchManipulationMode.cs" />
+    <Compile Include="Touch\TouchActionEventArgs.cs" />
+    <Compile Include="Touch\TouchActionType.cs" />
+    <Compile Include="Touch\TouchEffect.cs" />
+    <Compile Include="Touch\TouchActionEventHandler.cs" />
+    <Compile Include="Touch\TouchManipulationInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />
@@ -170,6 +176,7 @@
     <Folder Include="Resources\drawable\" />
     <Folder Include="Rings\" />
     <Folder Include="Resources\menu\" />
+    <Folder Include="Touch\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Assets\calendar2.png" />
