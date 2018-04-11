@@ -7,34 +7,22 @@ using Xamarin.Forms;
 
 namespace DruidCraftCalendar
 {
-    public class Calendar
+    public class CalendarRenderer
     {
-        public static void DrawCalendar(SKImageInfo info, SKCanvas canvas, INodesModel nodes, ISunModel sun, IMoonModel moon, IMetonicYearModel year, IMonthModel month, IDayModel day, ISunCountModel sunCount)
+        public static void DrawCalendar(SKImageInfo info, SKCanvas canvas, CalendarControl calendar)
         {
-            ElementDrawer.CreateRing(info,canvas, GetWidthValueFromPercentage(info, (float)41), new Color(0, 0, 0), true);
-            DrawNodeRing(info, canvas, nodes);
-            DrawSunRing(info, canvas, sun);
-            DrawMoonRing(info, canvas, moon);
-            ElementDrawer.CreateRing(info, canvas, GetWidthValueFromPercentage(info, (float)34), new Color(0, 0, 0), true);
-            BuildDayRings(info, canvas, day, month);
-            DrawSunCountRing(info, canvas, sunCount);
-            DrawMonthRing(info, canvas, month);
-            DrawYearRing(info, canvas, year);
+            ElementDrawer.CreateRing(info,canvas, Utility.GetWidthValueFromPercentage(info, (float)41), new Color(0, 0, 0), true);
+            DrawNodeRing(info, canvas, calendar._nodesModel);
+            DrawSunRing(info, canvas, calendar._sunModel);
+            DrawMoonRing(info, canvas, calendar._moonModel);
+            ElementDrawer.CreateRing(info, canvas, Utility.GetWidthValueFromPercentage(info, (float)34), new Color(0, 0, 0), true);
+            BuildDayRings(info, canvas, calendar._dayModel, calendar._monthModel);
+            DrawSunCountRing(info, canvas, calendar._sunCountModel);
+            DrawMonthRing(info, canvas, calendar._monthModel);
+            DrawYearRing(info, canvas, calendar._metonicYearModel);
         }
 
-        public static float GetWidthValueFromPercentage(SKImageInfo info, float v)
-        {
-            var val = 0f;
-            if(info.Width < info.Height)
-            {
-                val = (info.Width / 100) * v;
-            }
-            else
-            {
-                val = (info.Height / 100) * v;
-            }
-            return val;
-        }
+
 
         private static void BuildDayRings(SKImageInfo info, SKCanvas canvas, IDayModel day, IMonthModel month)
         {
@@ -53,7 +41,7 @@ namespace DruidCraftCalendar
                 Color = Color.FromRgb(0, 0, 0).ToSKColor(),
                 Style = SKPaintStyle.StrokeAndFill,
                 StrokeWidth = 2,
-                TextSize = GetWidthValueFromPercentage(info, 2.5f)
+                TextSize = Utility.GetWidthValueFromPercentage(info, 2.5f)
             };
 
             info = BuildOuterDayRing(info, canvas, outerRingPercentageWidth, arcPainter);
@@ -100,7 +88,7 @@ namespace DruidCraftCalendar
         {
             if (i == 0)
             {
-                canvas.DrawCircle(innerRingPegPoints[i].x, innerRingPegPoints[i].y - GetWidthValueFromPercentage(info, (float)1.7), innerRingPegPoints[i].Radius, GetPointPainter(innerRingPegPoints[i]));
+                canvas.DrawCircle(innerRingPegPoints[i].x, innerRingPegPoints[i].y - Utility.GetWidthValueFromPercentage(info, (float)1.7), innerRingPegPoints[i].Radius, GetPointPainter(innerRingPegPoints[i]));
             }
             else
             {
@@ -143,9 +131,9 @@ namespace DruidCraftCalendar
 
             SKRect textbounds = new SKRect();
             dayLabelPainter.MeasureText(oneLable, ref textbounds);
-            canvas.DrawText(oneLable, innerRingPegPoints[0].x - textbounds.MidX, innerRingPegPoints[0].y - GetWidthValueFromPercentage(info, 2.6f), dayLabelPainter);
+            canvas.DrawText(oneLable, innerRingPegPoints[0].x - textbounds.MidX, innerRingPegPoints[0].y - Utility.GetWidthValueFromPercentage(info, 2.6f), dayLabelPainter);
 
-            canvas.DrawText(thirtyLabel, outerRingPegPoints[29].x - GetWidthValueFromPercentage(info, 3.4f), outerRingPegPoints[29].y, dayLabelPainter);
+            canvas.DrawText(thirtyLabel, outerRingPegPoints[29].x - Utility.GetWidthValueFromPercentage(info, 3.4f), outerRingPegPoints[29].y, dayLabelPainter);
 
             for (int i = 1; i <= 28; i++)
             {
@@ -169,21 +157,21 @@ namespace DruidCraftCalendar
 
         private static CircleShape[] GetInnerPegPoints(SKImageInfo info, SKCanvas canvas, float innerRingPercentageWidth)
         {
-            var innerRingTemplate = ElementDrawer.CreateRing(info, canvas, GetWidthValueFromPercentage(info, innerRingPercentageWidth), new Color(0, 0, 0), false);
+            var innerRingTemplate = ElementDrawer.CreateRing(info, canvas, Utility.GetWidthValueFromPercentage(info, innerRingPercentageWidth), new Color(0, 0, 0), false);
             var innerRingPegPoints = ElementDrawer.CreatePegPoints(info, canvas, innerRingTemplate, 29);
             return innerRingPegPoints;
         }
 
         private static CircleShape[] GetOuterPegPoints(SKImageInfo info, SKCanvas canvas, float outerRingPercentageWidth)
         {
-            var outerRingTemplate = ElementDrawer.CreateRing(info, canvas, GetWidthValueFromPercentage(info, outerRingPercentageWidth), new Color(0, 0, 0), false);
+            var outerRingTemplate = ElementDrawer.CreateRing(info, canvas, Utility.GetWidthValueFromPercentage(info, outerRingPercentageWidth), new Color(0, 0, 0), false);
             var outerRingPegPoints = ElementDrawer.CreatePegPoints(info, canvas, outerRingTemplate, 30);
             return outerRingPegPoints;
         }
 
         private static SKImageInfo BuildInnerDayRing(SKImageInfo info, SKCanvas canvas, float innerRingPercentageWidth, SKPaint arcPainter)
         {
-            var innerRingActualWidth = GetWidthValueFromPercentage(info, innerRingPercentageWidth) * 2;
+            var innerRingActualWidth = Utility.GetWidthValueFromPercentage(info, innerRingPercentageWidth) * 2;
             var innerRingPaddingx = (info.Width - innerRingActualWidth) / 2;
             var innerRingPaddingy = (info.Height - innerRingActualWidth) / 2;
 
@@ -200,7 +188,7 @@ namespace DruidCraftCalendar
 
         private static SKImageInfo BuildOuterDayRing(SKImageInfo info, SKCanvas canvas, float outerRingPercentageWidth, SKPaint arcPainter)
         {
-            var outerRingActualWidth = GetWidthValueFromPercentage(info, outerRingPercentageWidth) * 2;
+            var outerRingActualWidth = Utility.GetWidthValueFromPercentage(info, outerRingPercentageWidth) * 2;
             var outerRingPaddingx = (info.Width - outerRingActualWidth) / 2;
             var outerRingPaddingy = (info.Height - outerRingActualWidth) / 2;
 
@@ -219,11 +207,11 @@ namespace DruidCraftCalendar
 
         private static void DrawMonthRing(SKImageInfo info, SKCanvas canvas, IMonthModel month)
         {
-            var monthRing = ElementDrawer.CreateRing(info, canvas, GetWidthValueFromPercentage(info, (float)21), new Color(255, 255, 255), false);
+            var monthRing = ElementDrawer.CreateRing(info, canvas, Utility.GetWidthValueFromPercentage(info, (float)21), new Color(255, 255, 255), false);
             monthRing.FillColor = new Color(255, 255, 0, 0);
             var monthPegPoints = ElementDrawer.CreatePegPoints(info, canvas, monthRing, 13, ((Math.PI * 2) / 13) / 2);
 
-            var monthLabelRing = ElementDrawer.CreateRing(info, canvas, GetWidthValueFromPercentage(info, (float)19.5), new Color(255, 255, 255), false);
+            var monthLabelRing = ElementDrawer.CreateRing(info, canvas, Utility.GetWidthValueFromPercentage(info, (float)19.5), new Color(255, 255, 255), false);
 
             var monthLabelPoints = ElementDrawer.CreatePegPoints(info, canvas, monthLabelRing, 13, ((Math.PI * 2) / 13) / 2);
             float rotation = 74;
@@ -235,14 +223,14 @@ namespace DruidCraftCalendar
                     Color = Color.FromRgb(255, 255, 255).ToSKColor(),
                     Style = SKPaintStyle.Fill,
                     StrokeWidth = 1,
-                    TextSize = GetWidthValueFromPercentage(info, 2.2f)
+                    TextSize = Utility.GetWidthValueFromPercentage(info, 2.2f)
                 };
                 SKPaint txtPaint2 = new SKPaint()
                 {
                     Color = Color.FromRgb(0, 0, 0).ToSKColor(),
                     Style = SKPaintStyle.Stroke,
                     StrokeWidth = 2,
-                    TextSize = GetWidthValueFromPercentage(info, 2.2f)
+                    TextSize = Utility.GetWidthValueFromPercentage(info, 2.2f)
                 };
 
                 canvas.DrawCircle(monthPegPoints[i].x, monthPegPoints[i].y, monthPegPoints[i].Radius, GetPointPainter(monthPegPoints[i]));
@@ -271,8 +259,8 @@ namespace DruidCraftCalendar
 
         private static void DrawYearRing(SKImageInfo info, SKCanvas canvas, IMetonicYearModel year)
         {
-            var yearRing = ElementDrawer.CreateRing(info, canvas, GetWidthValueFromPercentage(info, (float)6), new Color(0, 0, 0), true);
-            var yearRing2 = ElementDrawer.CreateRing(info, canvas, GetWidthValueFromPercentage(info, (float)6), new Color(255, 255, 255), true, true);
+            var yearRing = ElementDrawer.CreateRing(info, canvas, Utility.GetWidthValueFromPercentage(info, (float)6), new Color(0, 0, 0), true);
+            var yearRing2 = ElementDrawer.CreateRing(info, canvas, Utility.GetWidthValueFromPercentage(info, (float)6), new Color(255, 255, 255), true, true);
             var yearPegPoints = ElementDrawer.CreatePegPoints(info, canvas, yearRing, 19);
 
             yearPegPoints[year.GetMetonicYear() - 1].FillColor = new Color(255, 0, 0);
@@ -282,7 +270,7 @@ namespace DruidCraftCalendar
 
         private static void DrawSunCountRing(SKImageInfo info, SKCanvas canvas, ISunCountModel sunCount)
         {
-            var sunCountRing = ElementDrawer.CreateRing(info, canvas, GetWidthValueFromPercentage(info, (float)22.5), new Color(0, 0, 0), true);
+            var sunCountRing = ElementDrawer.CreateRing(info, canvas, Utility.GetWidthValueFromPercentage(info, (float)22.5), new Color(0, 0, 0), true);
             var sunCountPegPoints = ElementDrawer.CreatePegPoints(info, canvas, sunCountRing, 13);
             foreach (var p in sunCountPegPoints)
                 DrawMonthLine(info, canvas, p);
@@ -294,7 +282,7 @@ namespace DruidCraftCalendar
 
         private static void DrawMoonRing(SKImageInfo info, SKCanvas canvas, IMoonModel moon)
         {
-            var moonRing = ElementDrawer.CreateRing(info, canvas, GetWidthValueFromPercentage(info, (float)35.6), new Color(255, 255, 255,0), true);
+            var moonRing = ElementDrawer.CreateRing(info, canvas, Utility.GetWidthValueFromPercentage(info, (float)35.6), new Color(255, 255, 255,0), true);
             moonRing.FillColor = new Color(255, 255, 0, 0);
             var moonPegPoints = ElementDrawer.CreatePegPoints(info, canvas, moonRing, 56);
 
@@ -305,7 +293,7 @@ namespace DruidCraftCalendar
 
         private static void DrawSunRing(SKImageInfo info, SKCanvas canvas, ISunModel sun)
         {
-            var sunRing = ElementDrawer.CreateRing(info, canvas, GetWidthValueFromPercentage(info, (float)37.5), new Color(255, 255, 255,0), true);
+            var sunRing = ElementDrawer.CreateRing(info, canvas, Utility.GetWidthValueFromPercentage(info, (float)37.5), new Color(255, 255, 255,0), true);
             sunRing.FillColor = new Color(255, 255, 0, 0);
             var sunPegPoints = ElementDrawer.CreatePegPoints(info, canvas, sunRing, 56);
 
@@ -316,7 +304,7 @@ namespace DruidCraftCalendar
 
         private static void DrawNodeRing(SKImageInfo info, SKCanvas canvas, INodesModel nodes)
         {
-            var nodeRing = ElementDrawer.CreateRing(info, canvas, GetWidthValueFromPercentage(info, (float)39.4), new Color(255, 255, 255,0), true);
+            var nodeRing = ElementDrawer.CreateRing(info, canvas, Utility.GetWidthValueFromPercentage(info, (float)39.4), new Color(255, 255, 255,0), true);
             nodeRing.FillColor = new Color(255, 255, 0, 0);
             var nodePegPoints = ElementDrawer.CreatePegPoints(info, canvas, nodeRing, 56);
 

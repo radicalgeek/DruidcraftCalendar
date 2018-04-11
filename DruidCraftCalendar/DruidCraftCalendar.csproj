@@ -144,7 +144,7 @@
     <Compile Include="Rings\INodesModel.cs" />
     <Compile Include="Rings\ISunCountModel.cs" />
     <Compile Include="Rings\ISunModel.cs" />
-    <Compile Include="Calendar.cs" />
+    <Compile Include="CalendarRenderer.cs" />
     <Compile Include="ElementDrawer.cs" />
     <Compile Include="CircleShape.cs" />
     <Compile Include="DatePickerFragment.cs" />
@@ -154,6 +154,8 @@
     <Compile Include="Touch\TouchEffect.cs" />
     <Compile Include="Touch\TouchActionEventHandler.cs" />
     <Compile Include="Touch\TouchManipulationInfo.cs" />
+    <Compile Include="Utility.cs" />
+    <Compile Include="CalendarControl.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />
